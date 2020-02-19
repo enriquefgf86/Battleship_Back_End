@@ -328,6 +328,8 @@ public class SalvoController {//vease que se inicializa la clae especificandose 
         dto.add(sunkShips);
         return dto;
     }
+    //en este caso se procede a determinaar el array de naves que el oponente tien hundidas segun los disparos
+    //hechos por el adversario
 //    private List<Set<String>>sunkShipDtoOpp(Set<Salvo> salvoSet, GamePlayer gamePlayer){
 //        List<Set<String>>dto=new LinkedList<>();
 //        Set<String> sunkShipsOpp=new HashSet<>();
@@ -373,9 +375,13 @@ public class SalvoController {//vease que se inicializa la clae especificandose 
                (getOppDetails(gamePlayer).salvos.size()==gamePlayer.salvos.size())){
 
                 dto.put("state","Win ");
+                if(gamePlayer.getPlayer().getScorePerPlayer(gamePlayer.getGame())==null) {
+                    Score newScore = new Score(gamePlayer.getPlayer(), gamePlayer.getGame(), 1.0);
+                    scoreRepository.save(newScore);
+                }
 
-                Score newScore=new Score(gamePlayer.getPlayer(),gamePlayer.getGame(),1.0);
-                scoreRepository.save(newScore);
+//                Score newScore=new Score(gamePlayer.getPlayer(),gamePlayer.getGame(),1.0);
+//                scoreRepository.save(newScore);
             }
 
             if((sunkShipDto(getOppDetails(gamePlayer).salvos, getOppDetails(gamePlayer)).get(0).size()==5 )&&
@@ -383,8 +389,12 @@ public class SalvoController {//vease que se inicializa la clae especificandose 
                (getOppDetails(gamePlayer).salvos.size()==gamePlayer.salvos.size())){
 
                 dto.put("state","Game Over");
-                Score newScore=new Score(gamePlayer.getPlayer(),gamePlayer.getGame(),0.0);
-                scoreRepository.save(newScore);
+                if(gamePlayer.getPlayer().getScorePerPlayer(gamePlayer.getGame())==null) {
+                    Score newScore = new Score(gamePlayer.getPlayer(), gamePlayer.getGame(), 0.0);
+                    scoreRepository.save(newScore);
+                }
+//                Score newScore=new Score(gamePlayer.getPlayer(),gamePlayer.getGame(),0.0);
+//                scoreRepository.save(newScore);
 
             }
             if((sunkShipDto(getOppDetails(gamePlayer).salvos, getOppDetails(gamePlayer)).get(0).size()==5 )&&
